@@ -53,7 +53,7 @@ describe('StormGlass client ', () => {
     );
   });
 
-  it('shuold get an StormGlassResponseError when the StormGlass service responds with error', async () => {
+  it('should get an StormGlassResponseError when the StormGlass service responds with error', async () => {
     const lat = -33.792726;
     const lng = 151.289824;
 
