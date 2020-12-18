@@ -1,40 +1,47 @@
 import { StormGlass } from '@src/clients/stormGlass';
-import *  as HTTPUtil from '@src/util/request'
+import * as HTTPUtil from '@src/util/request';
 import stormGlassWeather3HoursFixture from '@test/fixtures/stormglass_weather_3_hours.json';
 import stormGlassNormalized3HoursFixture from '@test/fixtures/stormglass_normalized_response_3_hours.json';
-
 
 jest.mock('@src/util/request');
 
 describe('StormGlass client ', () => {
-  const MockedRequestClass = HTTPUtil.Request as jest.Mocked<typeof HTTPUtil.Request>
+  const MockedRequestClass = HTTPUtil.Request as jest.Mocked<
+    typeof HTTPUtil.Request
+  >;
   const mockedRequest = new HTTPUtil.Request() as jest.Mocked<HTTPUtil.Request>;
 
   it('should return the normalized forecast from the StormGlass service', async () => {
-    const lat = -33.792726
+    const lat = -33.792726;
     const lng = 151.123456;
 
-    mockedRequest.get = jest.fn().mockResolvedValue({ data: stormGlassWeather3HoursFixture })
+    mockedRequest.get = jest
+      .fn()
+      .mockResolvedValue({ data: stormGlassWeather3HoursFixture });
 
     const stormGlass = new StormGlass(mockedRequest);
     const response = await stormGlass.fetchPoints(lat, lng);
 
-    expect(response).toEqual(stormGlassNormalized3HoursFixture)
+    expect(response).toEqual(stormGlassNormalized3HoursFixture);
   });
 
   it('should exclue incomplete data points', async () => {
     const lat = -33.792726;
     const lng = 151.289824;
     const incompleteResponse = {
-      hours: [{
-        windDirection: {
-          noaa: 300,
+      hours: [
+        {
+          windDirection: {
+            noaa: 300,
+          },
+          time: '2020-04-26T00:00:00+00:00',
         },
-        time: '2020-04-26T00:00:00+00:00',
-      }]
-    }
+      ],
+    };
 
-    mockedRequest.get.mockResolvedValue({ data: incompleteResponse } as HTTPUtil.Response);
+    mockedRequest.get.mockResolvedValue({
+      data: incompleteResponse,
+    } as HTTPUtil.Response);
 
     const stormGlass = new StormGlass(mockedRequest);
     const response = await stormGlass.fetchPoints(lat, lng);
@@ -63,14 +70,13 @@ describe('StormGlass client ', () => {
       response: {
         status: 429,
         data: { errors: ['Rate Limit reached'] },
-      }
-    })
+      },
+    });
 
     const stormGlass = new StormGlass(mockedRequest);
 
     await expect(stormGlass.fetchPoints(lat, lng)).rejects.toThrow(
       'Unexpected error returned by the StormGlass service: Error: {"errors":["Rate Limit reached"]} Code: 429'
-    )
-
+    );
   });
 });

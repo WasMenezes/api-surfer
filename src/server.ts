@@ -14,7 +14,7 @@ export class SetupServer extends Server {
   public async init(): Promise<void> {
     this.setupExpress();
     this.setupControllers();
-    await this.databaseSetup()
+    await this.databaseSetup();
   }
 
   private setupExpress(): void {
@@ -32,7 +32,7 @@ export class SetupServer extends Server {
   }
 
   public async close(): Promise<void> {
-    await database.close()
+    await database.close();
   }
 
   public getApp(): Application {

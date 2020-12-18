@@ -1,4 +1,4 @@
-import { Beach, BeachPosition } from "@src/models/beach";
+import { Beach, BeachPosition } from '@src/models/beach';
 import nock from 'nock';
 import stormGlassWeather3HoursFixture from '@test/fixtures/stormglass_weather_3_hours.json';
 
@@ -8,9 +8,9 @@ describe('Beach forecast functional tests', () => {
 
     const defaultBeach = {
       lat: -33.792726,
-      lng: 151.282824,
+      lng: 151.289824,
       name: 'Manly',
-      position: BeachPosition.E
+      position: BeachPosition.E,
     };
     const beach = new Beach(defaultBeach);
     await beach.save();
@@ -53,7 +53,7 @@ describe('Beach forecast functional tests', () => {
             waveHeight: 0.47,
             windDirection: 299.45,
             windSpeed: 100,
-          }
+          },
         ],
       },
       {
@@ -93,9 +93,9 @@ describe('Beach forecast functional tests', () => {
             waveHeight: 0.46,
             windDirection: 321.5,
             windSpeed: 100,
-          }
-        ]
-      }]
-    );
+          },
+        ],
+      },
+    ]);
   });
 });

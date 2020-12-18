@@ -1,6 +1,11 @@
-import { StormGlass } from "@src/clients/stormGlass";
+import { StormGlass } from '@src/clients/stormGlass';
 import stormGlassNormalizedResponseFixture from '@test/fixtures/stormglass_normalized_response_3_hours.json';
-import { Beach, BeachPosition, Forecast, ForecastProcessingInternalError } from "../forecast";
+import {
+  Beach,
+  BeachPosition,
+  Forecast,
+  ForecastProcessingInternalError,
+} from '../forecast';
 
 jest.mock('@src/clients/stormGlass');
 
@@ -9,7 +14,7 @@ describe('Forecast Service ', () => {
   it('should return the forecast for a list of beaches', async () => {
     mockedStormGlassService.fetchPoints.mockResolvedValue(
       stormGlassNormalizedResponseFixture
-    )
+    );
     const beaches: Beach[] = [
       {
         lat: -33.792726,
@@ -38,8 +43,8 @@ describe('Forecast Service ', () => {
             waveHeight: 0.47,
             windDirection: 299.45,
             windSpeed: 100,
-          }
-        ]
+          },
+        ],
       },
       {
         time: '2020-04-26T01:00:00+00:00',
@@ -58,8 +63,8 @@ describe('Forecast Service ', () => {
             waveHeight: 0.46,
             windDirection: 310.48,
             windSpeed: 100,
-          }
-        ]
+          },
+        ],
       },
       {
         time: '2020-04-26T02:00:00+00:00',
@@ -78,8 +83,9 @@ describe('Forecast Service ', () => {
             waveHeight: 0.46,
             windDirection: 321.5,
             windSpeed: 100,
-          }],
-      }
+          },
+        ],
+      },
     ];
 
     const forecast = new Forecast(mockedStormGlassService);
@@ -103,11 +109,13 @@ describe('Forecast Service ', () => {
         user: 'some-id',
       },
     ];
-    mockedStormGlassService.fetchPoints.mockRejectedValue('Error fetching data');
+    mockedStormGlassService.fetchPoints.mockRejectedValue(
+      'Error fetching data'
+    );
     const forecast = new Forecast(mockedStormGlassService);
 
     await expect(forecast.processForecastForBeaches(beaches)).rejects.toThrow(
       ForecastProcessingInternalError
-    )
-  })
+    );
+  });
 });
