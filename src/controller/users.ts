@@ -6,8 +6,12 @@ import { Response, Request } from 'express';
 export class UsersController {
   @Post('')
   public async create(req: Request, res: Response): Promise<void> {
-    const user = new User(req.body);
-    const result = await user.save();
-    res.status(201).send(result);
+    try {
+      const user = new User(req.body);
+      const result = await user.save();
+      res.status(201).send(result);
+    } catch (error) {
+      res.status(400).send({error: error.message})
+    }
   }
 }
