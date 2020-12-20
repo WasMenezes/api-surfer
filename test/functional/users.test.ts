@@ -49,5 +49,21 @@ describe('Users functional tests', () => {
         error: 'User validation failed: email: already exists in the database.',
       });
     });
+  });
+
+  describe('When authenticating a user', () => {
+    it.only('Should generate a token for a valid user', async() => {
+      const newUser = {
+        name: 'John Doe',
+        email: 'john@mail.com',
+        password: '123456',
+      };
+      await new User(newUser).save();
+      const response = await global.testRequest.post('/users/authenticate').send({email: newUser.email, password: newUser.password});
+      console.log(response.body);
+      expect(response.body).toEqual(
+        expect.objectContaining({token: expect.any(String)})
+      );
+    });
   })
 });
