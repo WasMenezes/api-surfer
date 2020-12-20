@@ -60,7 +60,6 @@ describe('Users functional tests', () => {
       };
       await new User(newUser).save();
       const response = await global.testRequest.post('/users/authenticate').send({ email: newUser.email, password: newUser.password });
-      console.log(response.body);
       expect(response.body).toEqual(
         expect.objectContaining({ token: expect.any(String) })
       );
@@ -70,5 +69,18 @@ describe('Users functional tests', () => {
       const response = await global.testRequest.post('/users/authenticate').send({email: 'some-email@mail.com', password: 1234});
       expect(response.status).toBe(401);
     });
+
+    it('Should return UNAUTHORIZED if the user is found but the password does not match', async () => {
+      const newUser = {
+        name: 'John Doe',
+        email: 'john@mail.com',
+        password: '123456',
+      };
+      await new User(newUser).save();
+      const response = await global.testRequest.post('/users/authenticate').send({ email: newUser.email, password: 'diferent-password' });
+      expect(response.status).toBe(401);
+    });
+
+
   });
 });
