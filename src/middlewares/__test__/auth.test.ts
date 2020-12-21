@@ -24,7 +24,7 @@ describe('AuthMiddleware', () => {
     };
     const sendMock = jest.fn();
     const resFake = {
-      status: jest.fn(() => ({
+      status: jest.fn((status: number) => ({
         send: sendMock,
       })),
     };
