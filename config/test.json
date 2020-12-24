@@ -4,9 +4,12 @@
       "StormGlass": {
         "apiToken": "test-token"
       }
+    },
+    "database": {
+      "mongoUrl": "mongodb+srv://was:teste123456@cluster0.ckt27.mongodb.net/dbSurf?retryWrites=true&w=majority"
+    },
+    "logger": {
+      "enabled": false
     }
-  },
-  "logger": {
-    "enabled": "false"
   }
 }
