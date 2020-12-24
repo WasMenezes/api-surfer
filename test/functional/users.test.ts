@@ -68,7 +68,7 @@ describe('Users functional tests', () => {
     });
 
     it('Should return UNAUTHORIZED if the user with the given email is not found', async () => {
-      const response = await global.testRequest.post('/users/authenticate').send({email: 'some-email@mail.com', password: 1234});
+      const response = await global.testRequest.post('/users/authenticate').send({ email: 'some-email@mail.com', password: 1234 });
       expect(response.status).toBe(401);
     });
 
@@ -82,7 +82,41 @@ describe('Users functional tests', () => {
       const response = await global.testRequest.post('/users/authenticate').send({ email: newUser.email, password: 'diferent-password' });
       expect(response.status).toBe(401);
     });
-
-
   });
+
+  describe('When getting user profile info', () => {
+    it('Should return the tokens owner profile information', async () => {
+      const newUser = {
+        name: 'John Doe',
+        email: 'john@email.com',
+        password: '1234'
+      }
+
+      const user = await new User(newUser).save();
+      const token = AuthService.generateToken(user.toJSON());
+      const { body, status } = await global.testRequest
+        .get('/users/me')
+        .set({ 'x-access-token': token });
+
+      expect(status).toBe(200);
+      expect(body).toMatchObject(JSON.parse(JSON.stringify({ user })));
+    });
+
+    it('Should return not found when the user is not found', async () => {
+      const newUser = {
+        name: 'John Doe',
+        email: 'john@email.com',
+        password: '1234'
+      }
+
+      const user = new User(newUser);
+      const token = AuthService.generateToken(user.toJSON());
+      const { body, status } = await global.testRequest
+        .get('/users/me')
+        .set({ 'x-access-token': token });
+
+      expect(status).toBe(404);
+      expect(body.message).toBe('User not found!');
+    });
+  })
 });
