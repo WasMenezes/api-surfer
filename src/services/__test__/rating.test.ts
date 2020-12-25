@@ -1,6 +1,6 @@
 import { ForecastPoint } from "@src/clients/stormGlass";
 import { Beach, GeoPosition } from "@src/models/beach";
-import { Rating } from "./rating";
+import { Rating } from "../rating";
 
 describe('Rating Service', () => {
   const defaultBeach: Beach = {
