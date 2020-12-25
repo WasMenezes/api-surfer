@@ -60,4 +60,48 @@ describe('Rating Service', () => {
       expect(rating).toBe(5);
     });
   });
+
+  describe('Get rating based on swell period', () => {
+    it('should get a rating of 1 for a period of 5 seconds', () => {
+      const rating = defaultRating.getRatingForSwellPeriod(5);
+      expect(rating).toBe(1);
+    });
+
+    it('should get a rating of 2 for a period of 9 seconds', () => {
+      const rating = defaultRating.getRatingForSwellPeriod(9);
+      expect(rating).toBe(2);
+    });
+
+    it('should get a rating of 4 for a period of 12 seconds', () => {
+      const rating = defaultRating.getRatingForSwellPeriod(12);
+      expect(rating).toBe(4);
+    });
+
+    it('should get a rating of 5 for a period of 16 seconds', () => {
+      const rating = defaultRating.getRatingForSwellPeriod(16);
+      expect(rating).toBe(5);
+    });
+  });
+
+  describe('Get rating based on swell height', () => {
+    it('should get a rating 1 for less then ankle to knee high swell', () => {
+      const rating = defaultRating.getRatingForSwellSize(0.2);
+      expect(rating).toBe(1);
+    });
+
+    it('should get a rating 2 for an ankle to knee swell ', () => {
+      const rating = defaultRating.getRatingForSwellSize(0.6);
+      expect(rating).toBe(2);
+    });
+
+    it('should get a rating 3 for a waist high swell', () => {
+      const rating = defaultRating.getRatingForSwellSize(1.5);
+      expect(rating).toBe(3);
+    });
+
+    it('should get a rating 5 for overheadswell', () => {
+      const rating = defaultRating.getRatingForSwellSize(2.5);
+      expect(rating).toBe(5);
+    });
+  });
 });
