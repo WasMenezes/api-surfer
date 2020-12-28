@@ -20,7 +20,7 @@ export class UsersController extends BaseController {
 
   @Post('authenticate')
   public async authenticate(req: Request, res: Response): Promise<Response | undefined> {
-    const { email, password } = req.body;
+    const { password } = req.body;
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
       return this.sendErrorResponse(res, {
